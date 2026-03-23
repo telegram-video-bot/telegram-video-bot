@@ -1,4 +1,5 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+import logging
+logging.basicConfig(level=logging.INFO)from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 import threading
 import time
