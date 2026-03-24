@@ -1,3 +1,8 @@
+import sys
+import types
+
+module = types.ModuleType("imghdr")
+sys.modules["imghdr"] = module
 import logging
 import json
 import os
@@ -8,7 +13,6 @@ import threading
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
-# 🔥 Logging fix
 logging.basicConfig(level=logging.INFO)
 
 TOKEN = "8611933616:AAHyXO8O02TirpLauAKdCViCx37y_bTlNXQ"
@@ -16,7 +20,6 @@ CHANNEL_USERNAME = "animezone1896"
 
 DB_FILE = "videos.json"
 
-# Load DB safely
 if os.path.exists(DB_FILE):
     try:
         with open(DB_FILE, "r") as f:
