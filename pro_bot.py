@@ -1,8 +1,10 @@
 import sys
 import types
 
+# Fix imghdr error
 module = types.ModuleType("imghdr")
 sys.modules["imghdr"] = module
+
 import logging
 import json
 import os
@@ -17,6 +19,7 @@ logging.basicConfig(level=logging.INFO)
 
 TOKEN = "8611933616:AAHyXO8O02TirpLauAKdCViCx37y_bTlNXQ"
 CHANNEL_USERNAME = "animezone1896"
+BOT_USERNAME = "Animezone189_bot"
 
 DB_FILE = "videos.json"
 
@@ -53,17 +56,19 @@ def start(update: Update, context: CallbackContext):
 
                 msg = update.message.reply_video(
                     video=video,
-                    caption="🔥 Watch Now\n⏱ Delete in 1 hour",
+                    caption="🔥 Watch Now\n⏱ This video will be deleted in 1 hour",
                     reply_markup=reply_markup
                 )
 
                 threading.Timer(3600, delete_msg, args=(context, msg.chat_id, msg.message_id)).start()
-            else:
-                update.message.reply_text("Invalid link.")
-        else:
-            update.message.reply_text("Send video to get link.")
 
-    except Exception as e:
+            else:
+                update.message.reply_text("❌ Invalid link.")
+
+        else:
+            update.message.reply_text("Send me a video to get your link.")
+
+    except:
         update.message.reply_text("Error occurred")
 
 def handle_video(update: Update, context: CallbackContext):
@@ -78,7 +83,7 @@ def handle_video(update: Update, context: CallbackContext):
             user_limit[user_id] = {"date": today, "count": 0}
 
         if user_limit[user_id]["count"] >= DAILY_LIMIT:
-            update.message.reply_text("Daily limit reached (5).")
+            update.message.reply_text("🚫 Daily limit (5 videos) reached.")
             return
 
         user_limit[user_id]["count"] += 1
@@ -89,11 +94,11 @@ def handle_video(update: Update, context: CallbackContext):
         video_db[key] = video_id
         save_db()
 
-        link = f"https://t.me/Animezone189_bot?start={key}"
+        link = f"https://t.me/{BOT_USERNAME}?start={key}"
 
-        update.message.reply_text(f"Your Link:\n{link}")
+        update.message.reply_text(f"✅ Your Link:\n{link}")
 
-    except Exception as e:
+    except:
         update.message.reply_text("Error sending link")
 
 def delete_msg(context, chat_id, message_id):
